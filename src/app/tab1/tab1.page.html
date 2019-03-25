@@ -1,12 +1,48 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab One
+      Home
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-searchbar color="white"></ion-searchbar>
+
+<ion-content class="card-background-page">
+  
+  <ion-fab vertical="top" horizontal="end" slot="fixed">
+      <ion-fab-button>
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="right">
+          <ion-fab-button><ion-icon name="camera"></ion-icon></ion-fab-button>
+          <ion-fab-button><ion-icon name="cloud-upload"></ion-icon></ion-fab-button>
+      </ion-fab-list>
+      
+  </ion-fab>
+
+  <ion-list id="image" *ngFor="let photo of photos">
+      <ion-card><img [src]="photo.img_link"></ion-card>
+      <div id="imageDet">
+          <button ion-button icon-start clear small color="secondary">
+              <ion-icon name="sync"></ion-icon>
+              <div>Sync</div>
+            </button>
+            <button ion-button icon-start clear small (click)="remove(photo)" color="danger">
+                <ion-icon name="trash"></ion-icon>
+                <div>Remove</div>
+            </button>
+      </div>
+  </ion-list>
+</ion-content>
+
+
+
+
+
+
+
+<!-- <ion-content>
     <ion-card class="welcome-card">
       <ion-img src="/assets/shapes.svg"></ion-img>
       <ion-card-header>
@@ -38,4 +74,4 @@
         <ion-label>Theme Your App</ion-label>
       </ion-item>
     </ion-list>
-</ion-content>
+</ion-content> -->
