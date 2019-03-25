@@ -8,7 +8,7 @@
 
 <ion-searchbar color="white"></ion-searchbar>
 
-<ion-content class="card-background-page">
+<ion-content padding>
   
   <ion-fab vertical="top" horizontal="end" slot="fixed">
       <ion-fab-button>
@@ -21,7 +21,10 @@
       
   </ion-fab>
 
-  <ion-list id="image" *ngFor="let photo of photos">
+  <ion-input placeholder="Rnter an input" [(ngModel)]="input.name"></ion-input>
+  <ion-button color="primary" expand="block" (click)="addInput()">Apply</ion-button>
+
+  <!-- <ion-list id="image" *ngFor="let photo of photos">
       <ion-card><img [src]="photo.img_link"></ion-card>
       <div id="imageDet">
           <button ion-button icon-start clear small color="secondary">
@@ -33,7 +36,7 @@
                 <div>Remove</div>
             </button>
       </div>
-  </ion-list>
+  </ion-list> -->
 </ion-content>
 
 
