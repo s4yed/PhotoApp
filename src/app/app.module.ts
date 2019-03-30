@@ -13,14 +13,24 @@ import { AngularFireModule } from "angularfire2";
 import { environment } from "../environments/environment";
 import { AngularFirestoreModule } from "angularfire2/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
+
+import { IonicStorageModule } from '@ionic/storage';
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    IonicStorageModule.forRoot({
+      name: '__mydb',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }), 
     BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     StatusBar,
