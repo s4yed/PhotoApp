@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { map } from "rxjs/operators";
 import { Observable } from 'rxjs';
+import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 
 
 export interface Todo {
@@ -22,7 +23,7 @@ export class Tab1Page {
     name: "Ahmed"
   };
 
-  constructor(db: AngularFirestore){
+  constructor(db: AngularFirestore, private camera: Camera ){
     this.dbColl = db.collection('names');
     this.names = this.dbColl.snapshotChanges().pipe(
       map(actions => {
@@ -40,5 +41,34 @@ export class Tab1Page {
   }
   addInput(){
     return this.dbColl.add(this.input);
+  }
+  takePhoto(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+    this.camera.getPicture(options).then((imgData) => {
+      let base64 = 'data:image/jpeg;base64,' + imgData;
+    }, (err) => {
+      console.log(err);
+    });
+  }
+  upload(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+    this.camera.getPicture(options).then((imgData) => {
+      let base64 = 'data:image/jpeg;base64,' + imgData;
+    }, (err) => {
+      console.log(err);
+    });
+
   }
 }

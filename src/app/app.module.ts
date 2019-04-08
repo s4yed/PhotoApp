@@ -17,6 +17,8 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { IonicStorageModule } from '@ionic/storage';
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
+import { Camera } from "@ionic-native/camera/ngx";
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -30,12 +32,13 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
     AngularFirestoreModule,
     AngularFireAuthModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Camera
   ],
   bootstrap: [AppComponent]
 })

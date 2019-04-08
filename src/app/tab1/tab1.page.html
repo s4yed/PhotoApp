@@ -13,10 +13,22 @@
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
       <ion-fab-list side="right">
-          <ion-fab-button><ion-icon name="camera"></ion-icon></ion-fab-button>
-          <ion-fab-button><ion-icon name="cloud-upload"></ion-icon></ion-fab-button>
+          <ion-fab-button (click)="takePhoto()"><ion-icon name="camera"></ion-icon></ion-fab-button>
+          <ion-fab-button (click)="uploadPhoto()"><ion-icon name="cloud-upload"></ion-icon></ion-fab-button>
       </ion-fab-list>
   </ion-fab>
+  <ion-grid >
+    <ion-row>
+      <ion-col>
+        <img src="../../assets/imgs/bg.jpeg" alt="">
+      </ion-col>
+      <ion-col>
+          <img src="../../assets/imgs/bg.jpeg" alt="">
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+            
 
   <!-- <ion-list id="image" *ngFor="let photo of photos">
       <ion-card><img [src]="photo.img_link"></ion-card>

@@ -1,7 +1,8 @@
 {
   "name": "PhotoApp",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }
