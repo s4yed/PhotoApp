@@ -23,7 +23,7 @@ export class Tab1Page {
   input : Todo = {
     name: "Ahmed"
   };
-  base64: string;
+  imageURI: string;
 
   constructor(private db: AngularFirestore, private camera: Camera, private alertCtr: AlertController){
     this.dbColl = db.collection('names');
@@ -54,14 +54,13 @@ export class Tab1Page {
       mediaType: this.camera.MediaType.PICTURE
     };
     this.camera.getPicture(options).then((imgData) => {
-      this.base64 = 'data:image/jpeg;base64,' + imgData;
+      this.imageURI = imgData;
+    }, (err) => {
       this.alertCtr.create({
-        header: "Picture Taked",
-        message: this.base64,
+        header: "Camera Failed",
+        message: "Unable to open the camera, plsease try again.",
         buttons: ["OK"]
       }).then(alert => alert.present());
-    }, (err) => {
-      console.log(err);
     });
   }
 
@@ -74,14 +73,13 @@ export class Tab1Page {
       mediaType: this.camera.MediaType.PICTURE
     };
     this.camera.getPicture(options).then((imgData) => {
-      this.base64 = 'data:image/jpeg;base64,' + imgData;
+      this.imageURI = imgData;
+    }, (err) => {
       this.alertCtr.create({
-        header: "Picture Taked",
-        message: this.base64,
+        header: "Gallary Failed",
+        message: "Unable to open the gallary, please try again.",
         buttons: ["OK"]
       }).then(alert => alert.present());
-    }, (err) => {
-      console.log(err);
     });
 
   }

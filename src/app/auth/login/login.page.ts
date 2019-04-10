@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../auth.service";
 import { Router } from '@angular/router';
-import{ AlertController } from '@ionic/angular';
+import{ AlertController, ToastController } from '@ionic/angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -28,7 +28,8 @@ export class LoginPage implements OnInit {
     private router: Router,
     private auth: AuthService,
     private alert: AlertController,
-    public login: FormBuilder
+    public login: FormBuilder,
+    private toast: ToastController
     ) {
 
       this.user = this.login.group({
@@ -49,9 +50,7 @@ export class LoginPage implements OnInit {
   onLogin(){
     this.auth.login(this.user.value.username, this.user.value.password).then((res) => {
       if(res.code){
-        this.loginFailed()
-      }else{
-        this.router.navigate(['/tabs/tab1']);
+        this.loginFailed();
       }
     });
 

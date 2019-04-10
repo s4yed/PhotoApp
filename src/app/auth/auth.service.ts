@@ -2,22 +2,29 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Storage } from '@ionic/storage';
 import { Router } from "@angular/router";
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, Platform } from '@ionic/angular';
 import * as randString from "../../../node_modules/randomstring";
+import { BehaviorSubject } from 'rxjs';
 
+const TOKEN_KEY = 'auth-token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private token;
+  authState = new BehaviorSubject(false);
 
   constructor(
     private router:Router, 
     private afAuth: AngularFireAuth, 
     private storage: Storage,
-    public loadingCtr: LoadingController
-    ) { }
+    private loadingCtr: LoadingController,
+    private plt: Platform
+    ) { 
+      this.plt.ready().then(() => {
+        this.getToken();
+      });
+    }
 
   async login(user, pass){
     let load: HTMLIonLoadingElement;
@@ -33,6 +40,7 @@ export class AuthService {
       const res = await this.afAuth.auth.signInWithEmailAndPassword(user + '@codedamn.com',pass);
       load.dismiss();
       this.setToken();
+      this.authState.next(true);
       return res;
     } catch (error) {
       load.dismiss();
@@ -43,34 +51,27 @@ export class AuthService {
   }
 
   logout(){
-    this.storage.clear();
-    this.token = '';
+    this.storage.remove(TOKEN_KEY).then(() => {
+      this.authState.next(false);
+    });;
     this.router.navigate(['/login']);
   }
 
   getToken(){
-    if (this.token == 'undefined' || !this.storage.get('token')) {
-      return null;
-    }else{
-      if (this.token) {
-        return this.token;
-      }else{
-        this.storage.get('token').then(val => {
-          this.token = val;
-          
-          return val;
-        });
+    return this.storage.get(TOKEN_KEY).then((res) => {
+      if(res){
+        this.authState.next(true);
       }
-    }
+    });
   }
 
   setToken(){
-    this.token = randString.generate(40);
-    this.storage.set('token',this.token);
+    let token = randString.generate(50);
+    this.storage.set(TOKEN_KEY, token);
   }
 
   isAuthenticated(){
-    return this.getToken() ? true : false;
+    return this.authState.value;
   }
 
 }

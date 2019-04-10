@@ -11,17 +11,7 @@ export class AuthGuardService implements CanActivate {
   constructor(private auth: AuthService, private alertCtr: AlertController) { }
 
   canActivate(): boolean{
-    if(this.auth.isAuthenticated())
-      return true;
-    else{
-      this.alertCtr.create({
-        header: "Sorry !",
-        message: "You should be able to login to enter this page.",
-        buttons: ['OK']
-      }).then(alert => alert.present());
-      return false;
-    }
-
+    return this.auth.isAuthenticated();
   }
 
 }
