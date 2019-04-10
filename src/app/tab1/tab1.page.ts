@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { map } from "rxjs/operators";
 import { Observable } from 'rxjs';
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
+import { AlertController } from '@ionic/angular';
 
 
 export interface Todo {
@@ -22,8 +23,9 @@ export class Tab1Page {
   input : Todo = {
     name: "Ahmed"
   };
+  base64: string;
 
-  constructor(db: AngularFirestore, private camera: Camera ){
+  constructor(private db: AngularFirestore, private camera: Camera, private alertCtr: AlertController){
     this.dbColl = db.collection('names');
     this.names = this.dbColl.snapshotChanges().pipe(
       map(actions => {
@@ -42,7 +44,8 @@ export class Tab1Page {
   addInput(){
     return this.dbColl.add(this.input);
   }
-  takePhoto(){
+
+  takePicture(){
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
@@ -51,12 +54,18 @@ export class Tab1Page {
       mediaType: this.camera.MediaType.PICTURE
     };
     this.camera.getPicture(options).then((imgData) => {
-      let base64 = 'data:image/jpeg;base64,' + imgData;
+      this.base64 = 'data:image/jpeg;base64,' + imgData;
+      this.alertCtr.create({
+        header: "Picture Taked",
+        message: this.base64,
+        buttons: ["OK"]
+      }).then(alert => alert.present());
     }, (err) => {
       console.log(err);
     });
   }
-  upload(){
+
+  uploadPhoto(){
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
@@ -65,7 +74,12 @@ export class Tab1Page {
       mediaType: this.camera.MediaType.PICTURE
     };
     this.camera.getPicture(options).then((imgData) => {
-      let base64 = 'data:image/jpeg;base64,' + imgData;
+      this.base64 = 'data:image/jpeg;base64,' + imgData;
+      this.alertCtr.create({
+        header: "Picture Taked",
+        message: this.base64,
+        buttons: ["OK"]
+      }).then(alert => alert.present());
     }, (err) => {
       console.log(err);
     });
