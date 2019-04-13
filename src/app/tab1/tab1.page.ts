@@ -3,9 +3,10 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { map } from "rxjs/operators";
 import { Observable } from 'rxjs';
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
+import { UploadImageService } from "./upload-image.service";
+import { ToastController } from '@ionic/angular';
 
-
-export interface Todo {
+export interface User {
   id?: string;
   name: string;
 }
@@ -16,14 +17,14 @@ export interface Todo {
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  private dbColl: AngularFirestoreCollection<Todo>;
-  names: Observable<Todo[]>;
+  private dbColl: AngularFirestoreCollection<User>;
+  names: Observable<User[]>;
 
-  input : Todo = {
+  input : User = {
     name: "Ahmed"
   };
 
-  constructor(db: AngularFirestore, private camera: Camera ){
+  constructor(db: AngularFirestore, private camera: Camera, private imgup: UploadImageService, private toast:ToastController ){
     this.dbColl = db.collection('names');
     this.names = this.dbColl.snapshotChanges().pipe(
       map(actions => {
@@ -41,8 +42,8 @@ export class Tab1Page {
   }
   addInput(){
     return this.dbColl.add(this.input);
-  }
-  takePhoto(){
+  } 
+  async takePhoto(){
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
@@ -50,11 +51,23 @@ export class Tab1Page {
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
     };
-    this.camera.getPicture(options).then((imgData) => {
-      let base64 = 'data:image/jpeg;base64,' + imgData;
+     this.camera.getPicture(options).then((imgData) => {
+      let image = imgData;
+      this.imgup.uploadImage(image).then((res) => {     
+        this.toast.create({
+          message: 'Uploaded',
+        });
+      }).catch((err) => {
+        this.toast.create({
+          message: 'Failed',
+        });
+      });;
     }, (err) => {
-      console.log(err);
+      this.toast.create({
+        message: 'Failed',
+      });
     });
+  
   }
   upload(){
     const options: CameraOptions = {
@@ -65,9 +78,20 @@ export class Tab1Page {
       mediaType: this.camera.MediaType.PICTURE
     };
     this.camera.getPicture(options).then((imgData) => {
-      let base64 = 'data:image/jpeg;base64,' + imgData;
+      let image = imgData;
+      this.imgup.uploadImage(image).then((res) => {     
+        this.toast.create({
+          message: 'Uploaded',
+        });
+      }).catch((err) => {
+        this.toast.create({
+          message: 'Failed',
+        });
+      });;
     }, (err) => {
-      console.log(err);
+      this.toast.create({
+        message: 'Failed',
+      });
     });
 
   }
