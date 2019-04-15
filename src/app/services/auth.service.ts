@@ -3,8 +3,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Storage } from '@ionic/storage';
 import { LoadingController, Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
-import { NetworkService, ConnectionStatus } from './network.service';
-
+import { NetworkService } from './network.service';
+import { randomstring } from '../../../node_modules/randomstring'
 const TOKEN_KEY = 'auth-token';
 
 @Injectable({
@@ -12,7 +12,7 @@ const TOKEN_KEY = 'auth-token';
 })
 export class AuthService {
   authState = new BehaviorSubject(false);
-
+  private token: string
   constructor(
     private afAuth: AngularFireAuth, 
     private storage: Storage,
@@ -24,11 +24,11 @@ export class AuthService {
         this.checkToken();
       });
     }
-
+    
   async login(user, pass){
     let load: HTMLIonLoadingElement;
 
-    if(this.net.getCurrentNetworkStatus() == ConnectionStatus.Online){
+    if(this.net.getCurrentNetworkStatus()){
       await this.loadingCtr.create({
         message: 'Please wait ...'
       }).then(res => {
@@ -39,7 +39,7 @@ export class AuthService {
       load.dismiss();
       return ;
     }
-
+    
     let response;
     await this.afAuth.auth.signInWithEmailAndPassword(user + '@codedamn.com', pass).then(res => {
       load.dismiss();
@@ -69,10 +69,12 @@ export class AuthService {
       return res;
     });
   }
-
+  
   setToken(){
-    let token = [...Array(40)].map(i=>(~~(Math.random()*36)).toString(36)).join('')
-    this.storage.set(TOKEN_KEY, token).then(() => {
+    this.token = randomstring.generate();
+    console.log(this.token);
+    this.storage.set(TOKEN_KEY, this.token).then((res) => {
+      console.log(res);
       this.authState.next(true);
     });
   }
@@ -80,5 +82,5 @@ export class AuthService {
   isAuthenticated(){
     return this.authState.value;
   }
-
+  
 }

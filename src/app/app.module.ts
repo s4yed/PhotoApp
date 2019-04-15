@@ -19,6 +19,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { Camera } from "@ionic-native/camera/ngx";
 import { Network } from '@ionic-native/network/ngx';
+import { NetworkService } from './services/network.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,12 +36,13 @@ import { Network } from '@ionic-native/network/ngx';
     FormsModule,
   ],
   providers: [
-    StatusBar,
+    Network,
+    NetworkService,
+    Camera,
+    Storage,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Network,
-    Camera,
-    Storage
+    StatusBar,
   ],
   bootstrap: [AppComponent]
 })
