@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from "../auth.service";
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import{ AlertController } from '@ionic/angular';
+import{  ToastController } from '@ionic/angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -27,8 +27,8 @@ export class LoginPage implements OnInit {
   constructor(
     private router: Router,
     private auth: AuthService,
-    private alert: AlertController,
-    public login: FormBuilder
+    public login: FormBuilder,
+    private toastCtr: ToastController
     ) {
 
       this.user = this.login.group({
@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
         ])],
         password: ['', Validators.compose([
           Validators.required,
-          Validators.pattern('^(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9]+$')
+          Validators.pattern('^(?=.*[0-9])[a-zA-Z0-9]+$')
         ])]
       });
     }
@@ -49,9 +49,12 @@ export class LoginPage implements OnInit {
   onLogin(){
     this.auth.login(this.user.value.username, this.user.value.password).then((res) => {
       if(res.code){
-        this.loginFailed()
+        if(res.code === 'auth/network-request-failed')
+          this.loginFailed('No internet connection.');
+        else
+          this.loginFailed('Invalid username or password.')
       }else{
-        this.router.navigate(['/tabs/tab1']);
+        console.log(res);
       }
     });
 
@@ -61,12 +64,12 @@ export class LoginPage implements OnInit {
     this.router.navigate(['/register'])
   }
 
-  async loginFailed(){
-    const alert = await this.alert.create({
-      header: 'Login Failed',
-      message: 'Invalid username or password, please try again.',
-      buttons:["ok"]
+  async loginFailed(message: string){
+    const toast = await this.toastCtr.create({
+      message: message,
+      duration: 3000,
+      position: 'bottom'
     })
-    await alert.present()
+    await toast.present()
   }
 }

@@ -14,18 +14,6 @@ export const environment = {
   }
 };
 
-// export const environment = {
-//   production: false,
-//   firebase: {
-//     apiKey: "AIzaSyCrNqKSVkynms9y5j4f6MlbzLFphgDHXcY",
-//     authDomain: "photoapp-b1077.firebaseapp.com",
-//     databaseURL: "https://photoapp-b1077.firebaseio.com",
-//     projectId: "photoapp-b1077",
-//     storageBucket: "photoapp-b1077.appspot.com",
-//     messagingSenderId: "1064742070921"
-//   }
-// };
-
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

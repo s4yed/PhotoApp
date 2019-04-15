@@ -18,6 +18,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { Camera } from "@ionic-native/camera/ngx";
+import { Network } from '@ionic-native/network/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,8 +26,7 @@ import { Camera } from "@ionic-native/camera/ngx";
   imports: [
     IonicStorageModule.forRoot({
       name: '__mydb',
-      driverOrder: ['indexeddb', 'sqlite', 'websql']
-    }), 
+      driverOrder: ['indexeddb', 'sqlite', 'websql']}), 
     BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
@@ -38,7 +38,9 @@ import { Camera } from "@ionic-native/camera/ngx";
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Camera
+    Network,
+    Camera,
+    Storage
   ],
   bootstrap: [AppComponent]
 })

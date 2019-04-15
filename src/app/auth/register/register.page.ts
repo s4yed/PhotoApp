@@ -44,7 +44,7 @@ export class RegisterPage implements OnInit {
         ])],
         password: ['', Validators.compose([
           Validators.required,
-          Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
+          Validators.pattern('^(?=.*[0-9])[a-zA-Z0-9]+$')
         ])],
         cpassword: ['', Validators.compose([
           Validators.required,
@@ -68,7 +68,7 @@ export class RegisterPage implements OnInit {
       try { 
         const res = await this.afAuth.auth.createUserWithEmailAndPassword(username + '@codedamn.com', password)
         console.log(res);
-        this.router.navigate(['/tabs'])
+        this.router.navigate(['/login'])
       } catch(error){
         this.showAlert("error", error.message)
         console.dir(error);
