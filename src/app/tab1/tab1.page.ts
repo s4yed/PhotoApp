@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { map } from "rxjs/operators";
 import { Observable } from 'rxjs';
-import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
-import { AlertController } from '@ionic/angular';
+import { CameraService } from '../services/camera.service';
 
 
 export interface Todo {
@@ -25,8 +24,9 @@ export class Tab1Page {
   };
   imageURI: string;
 
-  constructor(private db: AngularFirestore, private camera: Camera, private alertCtr: AlertController){
-    this.dbColl = db.collection('names');
+  constructor(private db: AngularFirestore,
+     private camera: CameraService ){
+    this.dbColl = this.db.collection('names');
     this.names = this.dbColl.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
@@ -41,46 +41,16 @@ export class Tab1Page {
   ngOnInit(){
 
   }
+
   addInput(){
     return this.dbColl.add(this.input);
   }
 
   takePicture(){
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.camera.PictureSourceType.CAMERA,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    };
-    this.camera.getPicture(options).then((imgData) => {
-      this.imageURI = imgData;
-    }, (err) => {
-      this.alertCtr.create({
-        header: "Camera Failed",
-        message: "Unable to open the camera, plsease try again.",
-        buttons: ["OK"]
-      }).then(alert => alert.present());
-    });
+    return this.camera.takePhoto();
   }
 
   uploadPhoto(){
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    };
-    this.camera.getPicture(options).then((imgData) => {
-      this.imageURI = imgData;
-    }, (err) => {
-      this.alertCtr.create({
-        header: "Gallary Failed",
-        message: "Unable to open the gallary, please try again.",
-        buttons: ["OK"]
-      }).then(alert => alert.present());
-    });
-
+    return this.camera.uploadPhoto();
   }
 }
