@@ -4,15 +4,18 @@ import { Storage } from '@ionic/storage';
 import { LoadingController, Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { NetworkService } from './network.service';
-import { randomstring } from '../../../node_modules/randomstring'
+import { User } from "../interfaces/user.interface";
+var randomString = require('randomstring')
+
+const USER_DATA = 'user-data';
 const TOKEN_KEY = 'auth-token';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   authState = new BehaviorSubject(false);
-  private token: string
   constructor(
     private afAuth: AngularFireAuth, 
     private storage: Storage,
@@ -43,10 +46,11 @@ export class AuthService {
     let response;
     await this.afAuth.auth.signInWithEmailAndPassword(user + '@codedamn.com', pass).then(res => {
       load.dismiss();
-      this.setToken();
       if(res.user){
         response = res.user.uid;
       }
+      this.setUserData(response)
+      this.checkToken();
     }).catch(err => {
       console.log(err);
       response = err;
@@ -56,25 +60,33 @@ export class AuthService {
   }
 
   logout(){
-    return this.storage.remove(TOKEN_KEY).then(() => {
-      this.authState.next(false);
+    this.storage.get(USER_DATA).then((data) => {
+      let user_data = JSON.parse(data);
+      this.storage.remove(USER_DATA).then(() => {
+        this.authState.next(false);
+        user_data.auth_state = false;
+        console.log(user_data);
+      });
     });
   }
 
   checkToken(){
-    this.storage.get(TOKEN_KEY).then((res) => {
-      if(res){
+    this.storage.get(USER_DATA).then((data) => {
+      let user_data = JSON.parse(data);
+      if(user_data){
         this.authState.next(true);
       }
-      return res;
+      console.log(user_data);
     });
   }
   
-  setToken(){
-    this.token = randomstring.generate();
-    console.log(this.token);
-    this.storage.set(TOKEN_KEY, this.token).then((res) => {
-      console.log(res);
+  setUserData(uid: string){
+    let data: User = {
+      uid: uid,
+      auth_state: true,
+      auth_token: randomString.generate(44)
+    };
+    this.storage.set(USER_DATA, JSON.stringify(data)).then((res) => {
       this.authState.next(true);
     });
   }
@@ -83,4 +95,10 @@ export class AuthService {
     return this.authState.value;
   }
   
+  getUserId(){
+    this.storage.get(USER_DATA).then(data => {
+      let user_data = JSON.parse(data);
+      return user_data;
+    });
+  }
 }

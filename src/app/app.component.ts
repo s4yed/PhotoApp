@@ -13,9 +13,9 @@ import { debounceTime } from 'rxjs/operators';
   templateUrl: 'app.component.html'
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent {
 
-  isConnected: boolean
+  // isConnected: boolean
 
   constructor(
     private platform: Platform,
@@ -27,20 +27,16 @@ export class AppComponent implements OnInit{
   ) {
     this.initializeApp();
   }
-  ngOnInit(): void {
-    console.log('[Home] OnInit');
-    this.networkSubscriber();
-}
-
-networkSubscriber(): void {
+  
+  networkSubscriber(): void {
     this.net
-        .getCurrentNetworkStatus()
+    .getCurrentNetworkStatus()
         .pipe(debounceTime(300))
         .subscribe((connected: boolean) => {
-            this.isConnected = connected;
-            console.log('[Home] isConnected', this.isConnected);
-            //this.handleNotConnected(connected);
-        });
+            console.log('[Home] isConnected', connected);
+            this.net.updateNetworkChanges(connected)
+          });
+          
   }
 
 
@@ -49,8 +45,9 @@ networkSubscriber(): void {
       this.statusBar.styleLightContent();
       this.splashScreen.hide();
       //this.net.onNetworkChange().subscribe();
+      this.networkSubscriber();
       this.auth.authState.subscribe(state => {
-        console.log(state);
+        console.log('auth-state: ', state)
         if(state){
           this.router.navigate(['tabs/tab1']);
         }else{

@@ -54,7 +54,7 @@ export class LoginPage implements OnInit {
         else
           this.loginFailed('Invalid username or password.')
       }else{
-        console.log(res);
+        console.log('user-ID: ', res);
       }
     });
 

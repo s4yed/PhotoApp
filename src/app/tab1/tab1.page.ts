@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { map } from "rxjs/operators";
-import { Observable } from 'rxjs';
 import { CameraService } from '../services/camera.service';
+import { FirebaseService } from "../services/firebase.service";
+import { OfflineManagerService } from "../services/offline-manager.service";
+import { AuthService } from "../services/auth.service";
 
 
-export interface Todo {
-  id?: string;
-  name: string;
-}
 
 @Component({
   selector: 'app-tab1',
@@ -16,41 +13,27 @@ export interface Todo {
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  private dbColl: AngularFirestoreCollection<Todo>;
-  names: Observable<Todo[]>;
-
-  input : Todo = {
-    name: "Ahmed"
-  };
   imageURI: string;
 
-  constructor(private db: AngularFirestore,
-     private camera: CameraService ){
-    this.dbColl = this.db.collection('names');
-    this.names = this.dbColl.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return {id, ...data};
-        });
-      })
-    );
-  }
+  constructor(
+    private camera: CameraService,
+    private fire: FirebaseService,
+    private offline: OfflineManagerService,
+    private auth: AuthService ){ }
 
   ngOnInit(){
 
   }
 
-  addInput(){
-    return this.dbColl.add(this.input);
+  async loadImage(refresh = false, refresher?) {
+    
   }
 
-  takePicture(){
-    return this.camera.takePhoto();
+  takePhoto(){
+    this.offline.storeRequest(this.camera.takePhoto());
   }
 
   uploadPhoto(){
-    return this.camera.uploadPhoto();
+    this.offline.storeRequest(this.camera.uploadPhoto());
   }
 }

@@ -25,9 +25,7 @@ import { NetworkService } from './services/network.service';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    IonicStorageModule.forRoot({
-      name: '__mydb',
-      driverOrder: ['indexeddb', 'sqlite', 'websql']}), 
+    IonicStorageModule.forRoot(), 
     BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
