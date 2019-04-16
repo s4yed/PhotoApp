@@ -8,25 +8,25 @@
 
 <ion-content padding>
 
-  <ion-refresher slot="fixed" (ionRefresh)="loadData(true, $event)">
+  <ion-refresher slot="fixed" (ionRefresh)="loadImage(true, $event)">
     <ion-refresher-content>
     </ion-refresher-content>
   </ion-refresher>
 
   
-  <ion-fab vertical="top" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button>
-        <ion-icon name="add"></ion-icon>
+        <ion-icon name="add" (click)="takePhoto()"></ion-icon>
       </ion-fab-button>
-      <ion-fab-list side="right">
+      <!-- <ion-fab-list side="right">
           <ion-fab-button (click)="takePhoto()"><ion-icon name="camera"></ion-icon></ion-fab-button>
           <ion-fab-button (click)="uploadPhoto()"><ion-icon name="cloud-upload"></ion-icon></ion-fab-button>
-      </ion-fab-list>
+      </ion-fab-list> -->
   </ion-fab>
   <ion-grid >
     <ion-row>
-      <ion-col>
-        <img src="../../assets/imgs/bg.jpeg">
+      <ion-col *ngFor="let img of images">
+        <img [src]="img.uri">
       </ion-col>
       <!-- <ion-col>
           <img src="../../assets/imgs/bg.jpeg" alt="">

@@ -14,9 +14,13 @@ const STORAGE_REQ_KEY = 'user_data';
 })
 export class OfflineManagerService {
  
-  constructor(private fire: FirebaseService, private storage: Storage, private toastController: ToastController) { }
- 
-  checkForEvents(): Observable<any> {
+  constructor(private fire: FirebaseService,
+    private storage: Storage,
+    private toastController: ToastController) { 
+
+    }
+    
+    checkForEvents(): Observable<any> {
     return from(this.storage.get(STORAGE_REQ_KEY)).pipe(
       switchMap(storedOperations => {
         let storedObj = JSON.parse(storedOperations);

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Observable } from 'rxjs';
 import { Image } from '../interfaces/image.interface';
+import { NetworkService } from "../services/network.service";
 import { map } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+import { OfflineManagerService } from './offline-manager.service';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +16,10 @@ export class FirebaseService {
  
   private images: Observable<Image[]>;
  
-  constructor(db: AngularFirestore) {
+  constructor(private db: AngularFirestore,
+    private net: NetworkService,
+    // private offline: OfflineManagerService,
+    private storage: Storage) {
     this.imagesCollection = db.collection<Image>('images');
  
     this.images = this.imagesCollection.snapshotChanges().pipe(
@@ -27,8 +33,13 @@ export class FirebaseService {
     );
   }
  
-  getImages(forceRefresh: boolean = false) {
-    return this.images;
+  getImages(forceRefresh: boolean = false): Observable<Image[]> {
+    if (!this.net.getCurrentNetworkStatus()) {
+      this.images = from(this.getLocalData('user_data'));
+      return this.images;
+    }else{
+      return from(this.setLocalData('user_data', JSON.stringify(this.images)));
+    }
   }
  
   getImage(id) {
@@ -45,5 +56,12 @@ export class FirebaseService {
  
   removeImage(id) {
     return this.imagesCollection.doc(id).delete();
+  }
+  
+  setLocalData(key, data){
+    return this.storage.set(key, data);
+  }
+  getLocalData(key){
+    return this.storage.get(key);
   }
 }

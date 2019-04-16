@@ -4,6 +4,7 @@ import { CameraService } from '../services/camera.service';
 import { FirebaseService } from "../services/firebase.service";
 import { OfflineManagerService } from "../services/offline-manager.service";
 import { AuthService } from "../services/auth.service";
+import { Image } from '../interfaces/image.interface';
 
 
 
@@ -13,7 +14,7 @@ import { AuthService } from "../services/auth.service";
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  imageURI: string;
+  images: Image[];
 
   constructor(
     private camera: CameraService,
@@ -26,14 +27,16 @@ export class Tab1Page {
   }
 
   async loadImage(refresh = false, refresher?) {
-    
+    this.fire.getImages(refresh).subscribe(res => {
+      this.images = res;
+      if(refresher){
+        refresher.target.complete()
+      }
+    });
   }
 
   takePhoto(){
-    this.offline.storeRequest(this.camera.takePhoto());
-  }
-
-  uploadPhoto(){
-    this.offline.storeRequest(this.camera.uploadPhoto());
+    this.camera.selectPhoto();
+    // return this.offline.storeRequest(image);
   }
 }

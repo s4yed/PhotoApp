@@ -95,9 +95,10 @@ export class AuthService {
     return this.authState.value;
   }
   
-  getUserId(){
+  getUserId(): any{
     this.storage.get(USER_DATA).then(data => {
-      let user_data = JSON.parse(data);
+      let user_data = JSON.parse(data).uid;
+
       return user_data;
     });
   }

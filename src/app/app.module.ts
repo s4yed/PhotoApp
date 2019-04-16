@@ -20,6 +20,9 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { Camera } from "@ionic-native/camera/ngx";
 import { Network } from '@ionic-native/network/ngx';
 import { NetworkService } from './services/network.service';
+import { File } from '@ionic-native/File/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +41,9 @@ import { NetworkService } from './services/network.service';
     NetworkService,
     Camera,
     Storage,
+    File,
+    WebView,
+    FilePath,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     StatusBar,
