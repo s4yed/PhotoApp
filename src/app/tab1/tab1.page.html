@@ -25,8 +25,11 @@
   </ion-fab>
   <ion-grid >
     <ion-row>
-      <ion-col *ngFor="let img of images">
-        <img [src]="img.uri">
+      <ion-col *ngFor="let img of images; index as pos">
+        <ion-thumbnail slot="start">
+          <ion-img [src]="img.path"></ion-img>
+        </ion-thumbnail>
+        <div *ngIf="images.length">{{ img.name }}</div>
       </ion-col>
       <!-- <ion-col>
           <img src="../../assets/imgs/bg.jpeg" alt="">

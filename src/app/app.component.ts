@@ -6,6 +6,7 @@ import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { NetworkService} from './services/network.service';
 import { debounceTime } from 'rxjs/operators';
+import { FirebaseService } from './services/firebase.service';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class AppComponent {
     private statusBar: StatusBar,
     private auth: AuthService,
     private router: Router,
-    private net: NetworkService
+    private net: NetworkService,
+    private fire: FirebaseService
   ) {
     this.initializeApp();
   }
@@ -44,6 +46,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleLightContent();
       this.splashScreen.hide();
+      this.fire.initcollection();
       //this.net.onNetworkChange().subscribe();
       this.networkSubscriber();
       this.auth.authState.subscribe(state => {

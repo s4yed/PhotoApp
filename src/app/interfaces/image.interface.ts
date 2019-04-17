@@ -1,6 +1,7 @@
 export interface Image {
   _id?: string,
-  uri: string,
+  path: string,
+  filePath: string,
   name: string,
   type: string,
   date_time: {date: string, time: string},

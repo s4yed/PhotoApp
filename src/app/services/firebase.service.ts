@@ -20,7 +20,11 @@ export class FirebaseService {
     private net: NetworkService,
     // private offline: OfflineManagerService,
     private storage: Storage) {
-    this.imagesCollection = db.collection<Image>('images');
+    this.initcollection();
+  }
+
+  initcollection(){
+    this.imagesCollection = this.db.collection<Image>('images');
  
     this.images = this.imagesCollection.snapshotChanges().pipe(
       map(actions => {
@@ -53,7 +57,10 @@ export class FirebaseService {
   addImage(image: Image) {
     return this.imagesCollection.add(image);
   }
- 
+
+  addImages() {
+    return this.images;
+  }
   removeImage(id) {
     return this.imagesCollection.doc(id).delete();
   }

@@ -1,27 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraOptions, PictureSourceType } from "@ionic-native/camera/ngx";
-import { AlertController, ActionSheetController, Platform } from '@ionic/angular';
-import { Image } from '../interfaces/image.interface';
+import { AlertController, ActionSheetController, Platform, ToastController } from '@ionic/angular';
 import { AuthService } from "../services/auth.service";
 import { FilePath } from '@ionic-native/file-path/ngx';
-import { File } from "@ionic-native/File/ngx";
-
+// import { File } from "@ionic-native/File/ngx";
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { FileManagerService } from './file-manager.service';
 @Injectable({
   providedIn: 'root'
 })
 export class CameraService {
 
   constructor(private camera: Camera,
-    private alertCtr: AlertController,
+    private file_manager: FileManagerService,
     private auth: AuthService,
     private actionSheet: ActionSheetController,
     private filePath: FilePath,
     private plt: Platform,
-    private file: File
-    ) { }
+    private alert: AlertController,
+    private webview: WebView) { }
 
   async selectPhoto() {
-    const actionSheet = await this.actionSheet.create({
+     await this.actionSheet.create({
       header: "Select Image source",
       buttons: [{
         text: 'Load from Library',
@@ -40,10 +40,14 @@ export class CameraService {
         role: 'cancel'
       }
       ]
-    });
-    await actionSheet.present();
+    }).then(res => {
+      let actionSheet = res;
+      actionSheet.present();
+    }).catch(err => console.log(err));
+    // await actionSheet.present();
   }
 
+  
   takePicture(sourceType: PictureSourceType) {
     var options: CameraOptions = {
       quality: 100,
@@ -58,28 +62,27 @@ export class CameraService {
           .then(filePath => {
             let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
             let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-            this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+            this.file_manager.copyFileToLocalDir(correctPath, currentName, this.file_manager.createFileName());
           });
       } else {
         var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
         var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+        this.file_manager.copyFileToLocalDir(correctPath, currentName, this.file_manager.createFileName());
       }
+    }).catch(err => {
+      this.alert.create({
+        header: err,
+        message: 'Unable to open camera.',
+        buttons: ['OK']
+      }).then(res => res.present());
     });
   }
-  createFileName() {
-    var d = new Date(),
-      n = d.getTime(),
-      newFileName = n + ".jpg";
-    return newFileName;
-  }
-  copyFileToLocalDir(namePath, currentName, newFileName) {
-    this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName).then(success => {
-      // this.updateStoredImages(newFileName);
-    }, error => {
-      // this.presentToast('Error while storing file.');
-    });
-  }
+  
+  
+  
+  
+
+  
 
   // takePhoto(): Image {
   //   const options: CameraOptions = {
@@ -125,18 +128,18 @@ export class CameraService {
   //   return this.getPhotoData(uri);
   // }
 
-  private getPhotoData(uri: string): Image {
-    let names = uri.split('/');
-    let image: Image = {
-      uri: uri,
-      name: names[names.length - 1].split('.')[0],
-      type: names[names.length - 1].split('.')[1],
-      date_time: {
-        date: new Date().toLocaleString().split(', ')[0],
-        time: new Date().toLocaleString().split(', ')[1]
-      },
-      user_id: this.auth.getUserId()['uid']
-    }
-    return image;
-  }
+  // private getPhotoData(uri: string): Image {
+  //   let names = uri.split('/');
+  //   let image: Image = {
+  //     uri: uri,
+  //     name: names[names.length - 1].split('.')[0],
+  //     type: names[names.length - 1].split('.')[1],
+  //     date_time: {
+  //       date: new Date().toLocaleString().split(', ')[0],
+  //       time: new Date().toLocaleString().split(', ')[1]
+  //     },
+  //     user_id: this.auth.getUserId()['uid']
+  //   }
+  //   return image;
+  // }
 }
