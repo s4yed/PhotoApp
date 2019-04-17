@@ -1,26 +1,25 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header >
+  <ion-toolbar color="primary" >
     <ion-title>
       Home
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding color="secondary">
 
   <ion-refresher slot="fixed" (ionRefresh)="loadData(true, $event)">
     <ion-refresher-content>
     </ion-refresher-content>
   </ion-refresher>
 
-  
   <ion-fab vertical="top" horizontal="end" slot="fixed">
-      <ion-fab-button>
-        <ion-icon name="add"></ion-icon>
+      <ion-fab-button class="buttom">
+        <ion-icon name="add" ></ion-icon>
       </ion-fab-button>
       <ion-fab-list side="right">
-          <ion-fab-button (click)="takePhoto()"><ion-icon name="camera"></ion-icon></ion-fab-button>
-          <ion-fab-button (click)="uploadPhoto()"><ion-icon name="cloud-upload"></ion-icon></ion-fab-button>
+          <ion-fab-button (click)="takePhoto()" class="buttom"><ion-icon name="camera" ></ion-icon></ion-fab-button>
+          <ion-fab-button (click)="uploadPhoto()" class="buttom"><ion-icon name="cloud-upload" ></ion-icon></ion-fab-button>
       </ion-fab-list>
   </ion-fab>
   <ion-grid >
