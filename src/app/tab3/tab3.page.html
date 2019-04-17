@@ -11,4 +11,20 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+  <ion-toolbar (click)= "ChangeName()" >
+      Change Name
+      <ion-input placeholder="Enter The New Name" *ngIf="this.changename"></ion-input>
+      <ion-button horizontal="end" *ngIf="this.changename" (click)="NameChanged()">Done</ion-button>
+    </ion-toolbar>  
+    
+    <ion-toolbar (click)= "ChangePass()">
+      Change Password
+      <ion-input placeholder="Enter The New Password" *ngIf="this.changepass"></ion-input>
+      <ion-button horizontal="end" *ngIf="this.changepass" (click)="PassChanged()">Done</ion-button>
+    </ion-toolbar>
+
+
+
+
+</ion-content>

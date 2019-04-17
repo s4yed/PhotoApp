@@ -1,18 +1,10 @@
 <ion-header>
-    <!-- <ion-toolbar>
+     <ion-toolbar>
       <ion-title>
         Home
       </ion-title>
-    </ion-toolbar> -->
-      <ion-item-sliding>
-        <ion-item style="font-weight: bold">
-            Home
-        </ion-item>
-        <ion-item-options side="end" class= "optionsize">
-          <ion-item-option (click)="takePhoto()" ><ion-icon name="camera"></ion-icon></ion-item-option>
-          <ion-item-option (click)="upload()" ><ion-icon name="cloud-upload"></ion-icon></ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
+    </ion-toolbar>
+     
   </ion-header>
   
   <ion-content padding>
@@ -26,49 +18,37 @@
             <ion-fab-button (click)="upload()"><ion-icon name="cloud-upload"></ion-icon></ion-fab-button>
         </ion-fab-list>
       </ion-fab> -->
+      <div >
       
-      <ion-card>
+      <ion-card *ngIf="this.image">
         
         <ion-item-sliding>
             <ion-item>
                 <ion-icon name="list"></ion-icon>
             </ion-item>
             <ion-item-options side="end" class= "optionsize">
-              <ion-item-option (click)="unread(item)" ><ion-icon name="trash"></ion-icon></ion-item-option>
-              <ion-item-option (click)="unread(item)" ><ion-icon name="create"></ion-icon></ion-item-option>
+              <ion-item-option (click)="remove()" ><ion-icon name="trash"></ion-icon></ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
         
         <ion-card-header>
-          <ion-card-subtitle> Egypt  </ion-card-subtitle> <!-- the location of the photo -->
-          <ion-card-title > Sky </ion-card-title> <!-- title of the photo --> 
+          <!-- <ion-card-subtitle> </ion-card-subtitle> the location of the photo -->
+          <ion-card-title > {{ this.image.name }} </ion-card-title> <!-- title of the photo --> 
         </ion-card-header>
         
-        <!-- this is the description -->
-        <img src="../../assets/imgs/bg.jpeg" alt="">
+        <img [src]="this.image" alt="">
         
-        <!-- <ion-list id="image" *ngFor="let photo of photos">
-            <ion-card><img [src]="photo.img_link"></ion-card>
-            <div id="imageDet">
-                <button ion-button icon-start clear small color="secondary">
-                    <ion-icon name="sync"></ion-icon>
-                    <div>Sync</div>
-                  </button>
-                  <button ion-button icon-start clear small (click)="remove(photo)" color="danger">
-                      <ion-icon name="trash"></ion-icon>
-                      <div>Remove</div>
-                  </button>
-            </div>
-        </ion-list> -->
         
-        <ion-card-content>
-            This is a description 
-        </ion-card-content>
+        
+        <!-- <ion-card-content>
+          
+          This is a description 
+        </ion-card-content> -->
       </ion-card>
       <!-- <img src="../../assets/imgs/bg.jpeg" alt="">
         
         <img src="../../assets/imgs/bg.jpeg" alt=""> -->
-        
+      </div>
         
         
         

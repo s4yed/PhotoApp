@@ -21,8 +21,11 @@ export class Tab1Page {
   input : User = {
     name: "Ahmed"
   };
-  imageURI: string;
-
+  image= '../../assets/imgs/bg.jpeg';
+  
+  remove(){
+    this.image=null;
+  }
   constructor(private db: AngularFirestore,
      private camera: CameraService ){
     this.dbColl = this.db.collection('names');

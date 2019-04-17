@@ -9,8 +9,25 @@ import { Router } from '@angular/router';
 })
 export class Tab3Page {
   constructor(private auth: AuthService, private router: Router){ }
+  changename: boolean = false
+  changepass: boolean = false
+
   logout(){
     this.auth.logout();
     this.router.navigate(['/login']);
   }
+
+  ChangeName(){
+     this.changename = true
+   }
+
+  NameChanged(){
+  }
+   ChangePass(){
+     this.changepass = true
+   }
+
+   PassChanged(){
+   }
+
 }
