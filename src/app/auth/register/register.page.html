@@ -9,12 +9,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding color="secondary">
+<ion-content padding >
+    <img src="../../assets/imgs/logo.png" alt="" height="140" width="60" class="center">
+
   <form [formGroup] = "user">
       <ion-list>
-          <ion-item>
-            <ion-label position="floating">Username</ion-label>
-            <ion-input type="text" formControlName="username"></ion-input>
+          <ion-item >
+            <ion-label position="floating" color="primary">Username</ion-label>
+            <ion-input type="text" formControlName="username" color="primary"></ion-input>
           </ion-item>
 
           <div class="validations">
@@ -25,9 +27,9 @@
             </ng-container>
           </div>
 
-          <ion-item>
-            <ion-label position="floating">Password</ion-label>
-            <ion-input type="password" formControlName="password"></ion-input>
+          <ion-item >
+            <ion-label position="floating" color="primary">Password</ion-label>
+            <ion-input type="password" formControlName="password" color="primary"></ion-input>
           </ion-item>
 
           <div class="validations">
@@ -38,9 +40,9 @@
             </ng-container>
           </div>
 
-          <ion-item>
-            <ion-label position="floating">Confirme password</ion-label>
-            <ion-input type="password" formControlName="cpassword"></ion-input>
+          <ion-item >
+            <ion-label position="floating" color="primary">Confirme password</ion-label>
+            <ion-input type="password" formControlName="cpassword" color="primary"></ion-input>
           </ion-item>
 
           <div class="validations">
