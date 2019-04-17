@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraOptions, PictureSourceType } from "@ionic-native/camera/ngx";
-import { AlertController, ActionSheetController } from '@ionic/angular';
+import { AlertController, ActionSheetController, Platform } from '@ionic/angular';
 import { Image } from '../interfaces/image.interface';
 import { AuthService } from "../services/auth.service";
+import { FilePath } from '@ionic-native/file-path/ngx';
+import { File } from "@ionic-native/File/ngx";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,11 @@ export class CameraService {
   constructor(private camera: Camera,
     private alertCtr: AlertController,
     private auth: AuthService,
-    private actionSheet: ActionSheetController) { }
+    private actionSheet: ActionSheetController,
+    private filePath: FilePath,
+    private plt: Platform,
+    private file: File
+    ) { }
 
   async selectPhoto() {
     const actionSheet = await this.actionSheet.create({
@@ -47,17 +53,31 @@ export class CameraService {
     };
 
     this.camera.getPicture(options).then(imagePath => {
-      // if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-      //   this.filePath.resolveNativePath(imagePath)
-      //     .then(filePath => {
-      //       let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-      //       let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-      //       this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-      //     });
-      // } else {
+      if (this.plt.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+        this.filePath.resolveNativePath(imagePath)
+          .then(filePath => {
+            let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+            let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+            this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+          });
+      } else {
         var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
         var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        // this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+        this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+      }
+    });
+  }
+  createFileName() {
+    var d = new Date(),
+      n = d.getTime(),
+      newFileName = n + ".jpg";
+    return newFileName;
+  }
+  copyFileToLocalDir(namePath, currentName, newFileName) {
+    this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName).then(success => {
+      // this.updateStoredImages(newFileName);
+    }, error => {
+      // this.presentToast('Error while storing file.');
     });
   }
 
