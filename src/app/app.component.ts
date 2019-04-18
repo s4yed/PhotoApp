@@ -46,7 +46,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleLightContent();
       this.splashScreen.hide();
-      this.fire.initcollection();
+      // this.fire.initcollection();
       //this.net.onNetworkChange().subscribe();
       this.networkSubscriber();
       this.auth.authState.subscribe(state => {

@@ -16,15 +16,8 @@ export class FirebaseService {
  
   private images: Observable<Image[]>;
  
-  constructor(private db: AngularFirestore,
-    private net: NetworkService,
-    // private offline: OfflineManagerService,
-    private storage: Storage) {
-    this.initcollection();
-  }
-
-  initcollection(){
-    this.imagesCollection = this.db.collection<Image>('images');
+  constructor(db: AngularFirestore) {
+    this.imagesCollection = db.collection<Image>('images');
  
     this.images = this.imagesCollection.snapshotChanges().pipe(
       map(actions => {
@@ -37,13 +30,8 @@ export class FirebaseService {
     );
   }
  
-  getImages(forceRefresh: boolean = false): Observable<Image[]> {
-    if (!this.net.getCurrentNetworkStatus()) {
-      this.images = from(this.getLocalData('user_data'));
-      return this.images;
-    }else{
-      return from(this.setLocalData('user_data', JSON.stringify(this.images)));
-    }
+  getimages(refresh = false) {
+    return this.images;
   }
  
   getImage(id) {
@@ -51,24 +39,14 @@ export class FirebaseService {
   }
  
   updateImage(image: Image, id: string) {
-    return this.imagesCollection.doc(id).update(image);
+    return this.imagesCollection.doc(id).update(Image);
   }
  
-  addImage(image: Image) {
-    return this.imagesCollection.add(image);
+  addImage(Image: Image) {
+    return this.imagesCollection.add(Image);
   }
-
-  addImages() {
-    return this.images;
-  }
+ 
   removeImage(id) {
     return this.imagesCollection.doc(id).delete();
-  }
-  
-  setLocalData(key, data){
-    return this.storage.set(key, data);
-  }
-  getLocalData(key){
-    return this.storage.get(key);
   }
 }

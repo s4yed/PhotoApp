@@ -6,9 +6,9 @@ export const environment = {
   production: false,
   firebase: {
     apiKey: "AIzaSyBcjUPVFBpqu-C-u2WnokJReujHx1t5nFk",
-    authDomain: "photoapp-cdeb8.firebaseapp.com",
-    databaseURL: "https://photoapp-cdeb8.firebaseio.com",
-    projectId: "photoapp-cdeb8",
+    authDomain: "photo-app-9f225.firebaseapp.com",
+    databaseURL: "https://photo-app-9f225.firebaseio.com",
+    projectId: "photo-app-9f225",
     storageBucket: "",
     messagingSenderId: "327724290146"
   }

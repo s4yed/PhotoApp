@@ -18,9 +18,7 @@ import { map } from 'rxjs/operators';
 })
 
 export class Tab1Page {
-  // images: Image[];
-  private imagesCollection: AngularFirestoreCollection<Image>;
-  private images: Observable<Image[]>;
+  images: Image[];
   constructor(
     private camera: CameraService,
     private fire: FirebaseService,
@@ -31,14 +29,14 @@ export class Tab1Page {
      }
 
   ngOnInit(){
-    this.fire.getImages().subscribe(res => {
-      // this.images = res;
+    this.fire.getimages().subscribe(res => {
+      this.images = res;
     });
   }
 
   async loadImage(refresh = false, refresher?) {
-    this.fire.getImages(refresh).subscribe(res => {
-      // this.images = res;
+    this.fire.getimages(refresh).subscribe(res => {
+      this.images = res;
       if(refresher){
         refresher.target.complete()
       }
@@ -47,12 +45,10 @@ export class Tab1Page {
 
   takePhoto(){
     this.camera.selectPhoto();
-    this.imagesData();
+    // this.imagesData();
     // return this.offline.storeRequest(image);
   }
-  imagesData(){
-    this.fire.addImages().subscribe(res => {
-      // this.images = res;
-    });
+  remove(item) {
+    this.fire.removeImage(item.id);
   }
 }
