@@ -32,6 +32,9 @@ export class OfflineManagerService {
   ) {
     this.plt.ready().then(() => {
       this.loadStoredImages();
+      for(let img of this.images){
+        this.fire.addImage(img);
+      }
     });
   }
 

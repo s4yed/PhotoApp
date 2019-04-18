@@ -45,8 +45,11 @@ export class Tab1Page {
 
   takePhoto(){
     this.camera.selectPhoto();
-    // this.imagesData();
+    this.imagesData();
     // return this.offline.storeRequest(image);
+  }
+  imagesData(){
+    this.images = this.offline.getImages()
   }
   remove(item) {
     this.fire.removeImage(item.id);

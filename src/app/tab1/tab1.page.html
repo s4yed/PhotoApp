@@ -1,40 +1,40 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
       Home
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding color="secondary">
 
   <ion-refresher slot="fixed" (ionRefresh)="loadImage(true, $event)">
     <ion-refresher-content>
     </ion-refresher-content>
   </ion-refresher>
 
-  
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button>
-        <ion-icon name="add" (click)="takePhoto()"></ion-icon>
-      </ion-fab-button>
-      <!-- <ion-fab-list side="right">
+    <ion-fab-button>
+      <ion-icon name="add" (click)="takePhoto()"></ion-icon>
+    </ion-fab-button>
+    <!-- <ion-fab-list side="right">
           <ion-fab-button (click)="takePhoto()"><ion-icon name="camera"></ion-icon></ion-fab-button>
           <ion-fab-button (click)="uploadPhoto()"><ion-icon name="cloud-upload"></ion-icon></ion-fab-button>
       </ion-fab-list> -->
   </ion-fab>
-  <ion-grid >
+  <ion-grid>
     <ion-row>
       <ion-col *ngFor="let img of images; index as pos">
-        <ion-thumbnail slot="start">
-          <ion-img [src]="img.path"></ion-img>
-        </ion-thumbnail>
-        <div *ngIf="images.length">{{ img.name }}</div>
+
+        <img [src]="img.path">
+
+        <div *ngIf="images.length">{{ img. }}</div>
       </ion-col>
       <!-- <ion-col>
           <img src="../../assets/imgs/bg.jpeg" alt="">
       </ion-col> -->
     </ion-row>
   </ion-grid>
-          
+
 </ion-content>
