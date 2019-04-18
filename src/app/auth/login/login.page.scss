@@ -9,6 +9,19 @@ ion-content{
     margin: auto;
   }
   form{
-    margin-top: 40%;
+    margin-top: 15%;
   }
+  .item.item-trns {
+    border-color: #233142;
+    background-color: #233142;
+    color: white; 
+  }
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+  
+  
 }

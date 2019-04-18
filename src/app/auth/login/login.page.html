@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
       Login
     </ion-title>
@@ -7,30 +7,34 @@
 </ion-header>
 
 
-<ion-content padding>
-  <form [formGroup] = "user">
-      <ion-list>
-          <ion-item>
-            <ion-label position="floating">Username</ion-label>
-            <ion-input type="text" formControlName="username"></ion-input>
+
+<ion-content padding  >
+
+    <img src="../../assets/imgs/logo.png" alt="" height="140" width="60" class="center">
+
+  <form [formGroup] = "user" >
+      <ion-list >
+          <ion-item >
+            <ion-label position="floating"  >Username</ion-label>
+            <ion-input type="text" formControlName="username" color="primary" ></ion-input>
           </ion-item>
 
-          <div class="validations">
-            <ng-container *ngFor="let error of error_messages.username">
-              <div class="error" *ngIf="user.get('username').hasError(error.type) && (user.get('username').dirty || user.get('username').touched)">
+          <div>
+            <ng-container *ngFor="let error of error_messages.username"  >
+              <div  class="error item.item-trns" *ngIf="user.get('username').hasError(error.type) && (user.get('username').dirty || user.get('username').touched)">
                 {{ error.message }}
               </div>
             </ng-container>
           </div>
 
-          <ion-item>
-            <ion-label position="floating">Password</ion-label>
-            <ion-input type="password" formControlName="password"></ion-input>
+          <ion-item >
+            <ion-label position="floating"  shape="round" >Password</ion-label>
+            <ion-input type="password" formControlName="password" ></ion-input>
           </ion-item>
 
-          <div class="validations">
-            <ng-container *ngFor="let error of error_messages.password">
-              <div class="error" *ngIf="user.get('password').hasError(error.type) && (user.get('password').dirty || user.get('password').touched)">
+          <div class="validations"  >
+            <ng-container *ngFor="let error of error_messages.password" >
+              <div class="error"   *ngIf="user.get('password').hasError(error.type) && (user.get('password').dirty || user.get('password').touched)">
                 {{ error.message }}
               </div>
             </ng-container>
@@ -38,10 +42,10 @@
 
         </ion-list>
         <br>
-        <ion-button expand="block" class="btn" [disabled]="!user.valid" (click)="onLogin()" shape="round" disabled>Login</ion-button>
+        <ion-button expand="block" class="btn buttom" [disabled]="!user.valid" (click)="onLogin()" shape="round" disabled>Login</ion-button>
         <br>
-        <p style="text-align: center; font-size: 0.8em;">Don't have an account ?</p>
-        <ion-button expand="block" (click)="onSignup()"  shape="round" fill="clear" class="btn" >SignUp</ion-button>
+        <p style="text-align: center; font-size: 0.8em; color: #233142 ;" >Don't have an account ?</p>
+        <ion-button expand="block" (click)="onSignup()"  shape="round" fill="clear" class="btn buttom" >SignUp</ion-button>
   </form>
   
 </ion-content>

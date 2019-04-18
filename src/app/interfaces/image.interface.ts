@@ -1,13 +1,9 @@
-export interface Photo {
+export interface Image {
   _id?: string,
-  uri: string,
+  path: string,
+  filePath: string,
   name: string,
-  type: ['jpg', 'png'],
-  data: {
-    size: number,
-    width: number,
-    height: number
-  },
-  date: string,
+  type: string,
+  date_time: {date: string, time: string},
   user_id: string
 }

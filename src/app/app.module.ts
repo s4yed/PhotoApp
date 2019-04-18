@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ChangeDetectorRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -19,14 +19,15 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { Camera } from "@ionic-native/camera/ngx";
 import { Network } from '@ionic-native/network/ngx';
-
+import { NetworkService } from './services/network.service';
+import { File } from '@ionic-native/File/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    IonicStorageModule.forRoot({
-      name: '__mydb',
-      driverOrder: ['indexeddb', 'sqlite', 'websql']}), 
+    IonicStorageModule.forRoot(), 
     BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
@@ -35,12 +36,16 @@ import { Network } from '@ionic-native/network/ngx';
     FormsModule,
   ],
   providers: [
-    StatusBar,
+    Network,
+    NetworkService,
+    Camera,
+    Storage,
+    File,
+    WebView,
+    FilePath,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Network,
-    Camera,
-    Storage
+    StatusBar,
   ],
   bootstrap: [AppComponent]
 })
