@@ -18,38 +18,58 @@ import { map } from 'rxjs/operators';
 })
 
 export class Tab1Page {
-  images: Image[];
+  user_images: Image[];
   constructor(
     private camera: CameraService,
     private fire: FirebaseService,
     private offline: OfflineManagerService,
     private auth: AuthService, 
-    private alert: AlertController,
-    db: AngularFirestore ){
-     }
-
+    private alert: AlertController){
+      this.imagesData();
+      
+    }
+    
+    img: Image = {
+      name: 'sdjhfkjsdf.pnh',
+      path: 'storage/emulated/0/Android/data/io.ionic.starter/cache/1506748631577.jpg',
+      filePath: 'file:///storage/emulated/0/Android/data/io.ionic.starter/cache/1506748631577.jpg',
+      date_time:{date: new Date().toLocaleDateString(), time: new Date().toLocaleTimeString()},
+      user_id: this.auth.getUserId(),
+      type: 'jpg'
+    }
   ngOnInit(){
-    this.fire.getimages().subscribe(res => {
-      this.images = res;
-    });
+    this.fire.addImage(this.img);
+    this.loadImage();
+    this.imagesData();
+    // this.fire.addImage(this.img);
+    // console.log(this.auth.getUserId())
   }
 
   async loadImage(refresh = false, refresher?) {
     this.fire.getimages(refresh).subscribe(res => {
-      this.images = res;
+
+      
+
+      this.user_images = res;
       if(refresher){
         refresher.target.complete()
       }
     });
   }
 
+  getUserImages(){
+    // for(let img of res){
+    //   if(this.auth.getUserId() === img.user_id)
+    //     this.user_images.push(img);
+    // }
+  }
   takePhoto(){
     this.camera.selectPhoto();
     this.imagesData();
     // return this.offline.storeRequest(image);
   }
   imagesData(){
-    this.images = this.offline.getImages()
+    this.user_images = this.offline.getImages()
   }
   remove(item) {
     this.fire.removeImage(item.id);

@@ -52,6 +52,7 @@ export class CameraService {
     var options: CameraOptions = {
       quality: 100,
       sourceType: sourceType,
+      encodingType: this.camera.EncodingType.JPEG,  
       saveToPhotoAlbum: false,
       correctOrientation: true
     };

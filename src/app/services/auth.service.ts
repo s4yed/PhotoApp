@@ -11,11 +11,13 @@ const USER_DATA = 'user-data';
 const TOKEN_KEY = 'auth-token';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   authState = new BehaviorSubject(false);
+  private uid: string = '';
   constructor(
     private afAuth: AngularFireAuth, 
     private storage: Storage,
@@ -48,6 +50,7 @@ export class AuthService {
       load.dismiss();
       if(res.user){
         response = res.user.uid;
+        this.uid = response;
       }
       this.setUserData(response)
       this.checkToken();
@@ -75,8 +78,8 @@ export class AuthService {
       let user_data = JSON.parse(data);
       if(user_data){
         this.authState.next(true);
+        console.log(user_data);
       }
-      console.log(user_data);
     });
   }
   
@@ -96,10 +99,6 @@ export class AuthService {
   }
   
   getUserId(): any{
-    this.storage.get(USER_DATA).then(data => {
-      let user_data = JSON.parse(data).uid;
-
-      return user_data;
-    });
+    return this.uid;
   }
 }

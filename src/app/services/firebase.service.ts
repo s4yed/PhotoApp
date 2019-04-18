@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { Observable, from } from 'rxjs';
 import { OfflineManagerService } from './offline-manager.service';
 import { Storage } from '@ionic/storage';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,10 @@ export class FirebaseService {
   private imagesCollection: AngularFirestoreCollection<Image>;
  
   private images: Observable<Image[]>;
+
+  
  
-  constructor(db: AngularFirestore) {
+  constructor(db: AngularFirestore, private auth: AuthService) {
     this.imagesCollection = db.collection<Image>('images');
  
     this.images = this.imagesCollection.snapshotChanges().pipe(
@@ -31,6 +34,7 @@ export class FirebaseService {
   }
  
   getimages(refresh = false) {
+    
     return this.images;
   }
  

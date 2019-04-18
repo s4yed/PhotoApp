@@ -32,36 +32,35 @@ export class OfflineManagerService {
   ) {
     this.plt.ready().then(() => {
       this.loadStoredImages();
-      for(let img of this.images){
-        this.fire.addImage(img);
-      }
+      this.checkForEvents();
     });
   }
 
-  //   checkForEvents(): Observable<any> {
-  //   return from(this.storage.get(STORAGE_REQ_KEY)).pipe(
-  //     switchMap(storedOperations => {
-  //       let storedObj = JSON.parse(storedOperations);
-  //       if (storedObj && storedObj.length > 0) {
-  //         return this.sendRequests(storedObj).pipe(
-  //           finalize(() => {
-  //             let toast = this.toastController.create({
-  //               message: `Local data succesfully synced to API!`,
-  //               duration: 3000,
-  //               position: 'bottom'
-  //             });
-  //             toast.then(toast => toast.present());
 
-  //             this.storage.remove(STORAGE_REQ_KEY);
-  //           })
-  //         );
-  //       } else {
-  //         console.log('no local events to sync');
-  //         return of(false);
-  //       }
-  //     })
-  //   )
-  // }
+    checkForEvents(): Observable<any> {
+    return from(this.storage.get(STORAGE_REQ_KEY)).pipe(
+      switchMap(storedOperations => {
+        let storedObj = JSON.parse(storedOperations);
+        if (storedObj && storedObj.length > 0) {
+          return of(this.fire.addImage(storedObj)).pipe(
+            finalize(() => {
+              let toast = this.toastController.create({
+                message: `Local data succesfully synced to API!`,
+                duration: 3000,
+                position: 'bottom'
+              });
+              toast.then(toast => toast.present());
+
+              this.storage.remove(STORAGE_REQ_KEY);
+            })
+          );
+        } else {
+          console.log('no local events to sync');
+          return of(false);
+        }
+      })
+    )
+  }
   loadStoredImages() {
     this.storage.get(STORAGE_REQ_KEY).then(images => {
       if (images) {
@@ -69,6 +68,7 @@ export class OfflineManagerService {
         this.images = [];
         for (let img of arr) {
           this.images.push(img);
+          this.fire.addImage(img);
         }
       }
     });
