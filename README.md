@@ -1,6 +1,9 @@
-## PhotoApp
+# PhotoApp
 Version: 0.1
-#### This app developed to enable the user to upload their photos safely at the cloud stoarge which make the user capable of retrieving the saved photos at any time he want.
+
+This app developed to enable the user to upload their photos safely at the cloud stoarge which make the user capable of retrieving the saved photos at any time he want.
+
+### Follow these steps to run this project without any errors :
 
 1- Make sure that Nodejs and Android SDK installed on your machine.
 
@@ -17,7 +20,7 @@ Version: 0.1
 4- Then to install all the dependancies that have been used in this project you can type :
 
         $ npm install
-5- After that add all Cordova plugins :
+5- After that add all Cordova plugins :  
 
         $ cordova state restore --plugins
 6- Finally you can run this project on your phone by the following commands :
@@ -26,4 +29,4 @@ Version: 0.1
         
         $ cordova run android
 
-#### To use the app you have to register or login if you have an account when you sign in you can access your saved photos instantly or add a new one. there is a plus sign that is used to add a new photo from your library or shot a new one once you press the right mark your photo is saved on your account 
+##### To use the app you have to register or login if you have an account when you sign in you can access your saved photos instantly or add a new one. there is a plus sign that is used to add a new photo from your library or shot a new one once you press the right mark your photo is saved on your account.
