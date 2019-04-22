@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Login
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form [formGroup] = "user">
+      <ion-list>
+          <ion-item>
+            <ion-label position="floating">Username</ion-label>
+            <ion-input type="text" formControlName="username"></ion-input>
+          </ion-item>
+
+          <div class="validations">
+            <ng-container *ngFor="let error of error_messages.username">
+              <div class="error" *ngIf="user.get('username').hasError(error.type) && (user.get('username').dirty || user.get('username').touched)">
+                {{ error.message }}
+              </div>
+            </ng-container>
+          </div>
+
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+
+          <div class="validations">
+            <ng-container *ngFor="let error of error_messages.password">
+              <div class="error" *ngIf="user.get('password').hasError(error.type) && (user.get('password').dirty || user.get('password').touched)">
+                {{ error.message }}
+              </div>
+            </ng-container>
+          </div>
+
+        </ion-list>
+        <br>
+        <ion-button expand="block" class="btn" [disabled]="!user.valid" (click)="onLogin()" shape="round" disabled>Login</ion-button>
+        <br>
+        <p style="text-align: center; font-size: 0.8em;">Don't have an account ?</p>
+        <ion-button expand="block" (click)="onSignup()"  shape="round" fill="clear" class="btn" >SignUp</ion-button>
+  </form>
+  
+</ion-content>

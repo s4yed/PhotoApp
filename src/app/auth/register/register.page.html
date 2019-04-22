@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Register
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup] = "user">
+      <ion-list>
+          <ion-item>
+            <ion-label position="floating">Username</ion-label>
+            <ion-input type="text" formControlName="username"></ion-input>
+          </ion-item>
+
+          <div class="validations">
+            <ng-container *ngFor="let error of error_messages.username">
+              <div class="error" *ngIf="user.get('username').hasError(error.type) && (user.get('username').dirty || user.get('username').touched)">
+                {{ error.message }}
+              </div>
+            </ng-container>
+          </div>
+
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+
+          <div class="validations">
+            <ng-container *ngFor="let error of error_messages.password">
+              <div class="error" *ngIf="user.get('password').hasError(error.type) && (user.get('password').dirty || user.get('password').touched)">
+                {{ error.message }}
+              </div>
+            </ng-container>
+          </div>
+
+          <ion-item>
+            <ion-label position="floating">Confirme password</ion-label>
+            <ion-input type="password" formControlName="cpassword"></ion-input>
+          </ion-item>
+
+          <div class="validations">
+            <ng-container *ngFor="let error of error_messages.cpassword">
+              <div class="error" *ngIf="user.get('cpassword').hasError(error.type) && (user.get('cpassword').dirty || user.get('cpassword').touched)">
+                {{ error.message }}
+              </div>
+            </ng-container>
+          </div>
+          
+          <div class="validations" *ngIf="mismatch">
+              Passowrd and Confirmation Password must be identical
+          </div>
+
+        </ion-list>
+        <br>
+        <ion-button expand="block" class="btn" [disabled]="!user.valid" (click)="register()" shape="round" disabled>signup</ion-button>
+  </form>
+  
+</ion-content>

@@ -1,64 +1,58 @@
 import { Component } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { map } from "rxjs/operators";
+import { CameraService } from '../services/camera.service';
+import { FirebaseService } from "../services/firebase.service";
+import { OfflineManagerService } from "../services/offline-manager.service";
+import { AuthService } from "../services/auth.service";
+import { Image } from '../interfaces/image.interface';
+import { ToastController, AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
-import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 
 
-export interface Todo {
-  id?: string;
-  name: string;
-}
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
-  private dbColl: AngularFirestoreCollection<Todo>;
-  names: Observable<Todo[]>;
-  base64: String;
-  input : Todo = {
-    name: "Ahmed"
-  };
 
-  constructor(private db: AngularFirestore,public camera: Camera){
-    this.dbColl = db.collection('names');
-    this.names = this.dbColl.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return {id, ...data};
-        });
-      })
-    );
-  }
+export class Tab1Page {
+  // images: Image[];
+  private imagesCollection: AngularFirestoreCollection<Image>;
+  private images: Observable<Image[]>;
+  constructor(
+    private camera: CameraService,
+    private fire: FirebaseService,
+    private offline: OfflineManagerService,
+    private auth: AuthService, 
+    private alert: AlertController,
+    db: AngularFirestore ){
+     }
 
   ngOnInit(){
-
-  }
-  addInput(){
-    return this.dbColl.add(this.input);
-  }
-
-  uploadPhoto(){
-    const options : CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    }
-
-    this.camera.getPicture(options).then((imageData) => {
-      this.base64 = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      console.log(err);
+    this.fire.getImages().subscribe(res => {
+      // this.images = res;
     });
-
   }
 
+  async loadImage(refresh = false, refresher?) {
+    this.fire.getImages(refresh).subscribe(res => {
+      // this.images = res;
+      if(refresher){
+        refresher.target.complete()
+      }
+    });
+  }
 
+  takePhoto(){
+    this.camera.selectPhoto();
+    this.imagesData();
+    // return this.offline.storeRequest(image);
+  }
+  imagesData(){
+    this.fire.addImages().subscribe(res => {
+      // this.images = res;
+    });
+  }
 
 }
