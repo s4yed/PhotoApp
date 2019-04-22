@@ -29,4 +29,4 @@ This app developed to enable the user to upload their photos safely at the cloud
         
         $ cordova run android
 
-##### To use the app you have to register or login if you have an account when you sign in you can access your saved photos instantly or add a new one. there is a plus sign that is used to add a new photo from your library or shot a new one once you press the right mark your photo is saved on your account.
+To use the app you have to register or login if you have an account when you sign in you can access your saved photos instantly or add a new one. there is a plus sign that is used to add a new photo from your library or shot a new one once you press the right mark your photo is saved on your account.
